@@ -18,16 +18,16 @@ typedef struct
 static ColumnState columns[WIDTH];
 
 // Defining the color of columns that will appear
-static uint8_t color_palette[] = {0x2, 0x4, 0xB, 0xE, 0xD};
+static uint8_t color_palette[] = {0x02, 0x04, 0x01, 0x0E};
 // Initializing all the columns's speed, color and starting position.
 void init_matrix()
 {
     setupRNG(947);
     for (int i = 0; i < WIDTH; i++)
     {
-        columns[i].y_pos = randint(HEIGHT);
-        columns[i].speed = 1 + randint(3);
-        columns[i].color = color_palette[randint(5)];
+        columns[i].y_pos = randint(100) % HEIGHT;
+        columns[i].speed = 1 + randint(100) % 3;
+        columns[i].color = color_palette[randint(1000) % 4];
     }
 }
 
@@ -57,7 +57,7 @@ void draw_matrix_frame()
         {
             columns[x].y_pos = 0;
             columns[x].speed = 1 + randint(3);
-            columns[x].color = color_palette[randint(5)];
+            columns[x].color = color_palette[randint(1000) % 4];
         }
     }
 }

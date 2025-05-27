@@ -83,6 +83,7 @@ void handle_menu()
             printf("Starting Matrix Rain effect...\n");
             reset_key_buffer();
             init_matrix();
+            reset_key_buffer();
             while (1)
             {
                 draw_matrix_frame();

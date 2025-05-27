@@ -7,17 +7,17 @@
 #include "kernel/pit.h"
 #include "i386/keyboard.h"
 #include "i386/monitor.h"
+#include "game/game.h"
 
 #define LNLIMIT 100
 
-// a fundtion that returns the absolute value of a number. It is used to figure out the distance between player and ball (for the AI), and wanted no negative value for that distance.
 int abs(int number)
 {
     if (number < 0)
         return -number;
     return number;
 }
-// Simple exponential approximation using Taylor series to replace the ln function from a library.
+// Simple exponential approximation using Taylor series
 double exp_taylor(double x, int terms)
 {
     double result = 1.0;
@@ -29,7 +29,7 @@ double exp_taylor(double x, int terms)
     }
     return result;
 }
-// Natural log using Newton-Raphson. Used to improve the score displaying.
+// Natural log using Newton-Raphson
 double ln(double x)
 {
     if (x <= 0)
@@ -75,7 +75,7 @@ bool pvp = false,
      eve = false,
      debug = false;
 
-// structures that helps storing the position of ball and paddles.
+// structures
 struct paddle
 {
     uint x, y;
@@ -88,7 +88,6 @@ struct _ball
     int8_t dx, dy;
 } ball;
 
-// Initialized the playing field.
 void generate_grid(uint grid[ROWS][COLS])
 {
     for (uint y = 0; y < ROWS; y++)
@@ -102,7 +101,7 @@ void generate_grid(uint grid[ROWS][COLS])
         }
     }
 }
-// Renders paddles, ball, background, and scores
+
 void draw_game(uint grid[ROWS][COLS])
 {
     printf("\033[H");
@@ -226,7 +225,6 @@ void update_ball(uint grid[ROWS][COLS])
     ball.x += ball.dx;
 }
 
-// Moves the paddle up/down
 void move_player(uint index, bool direction, uint grid[ROWS][COLS])
 {
     if (!direction)
@@ -254,7 +252,6 @@ void move_player(uint index, bool direction, uint grid[ROWS][COLS])
     }
 }
 
-// the code/function our "ai", wich is a functions that simply moves the paddle to the balls position when the ball has reached the horisontal length there.
 void automate_player(unsigned int index, uint grid[ROWS][COLS])
 {
     int diff = abs(player[index].x - ball.x);
@@ -265,8 +262,7 @@ void automate_player(unsigned int index, uint grid[ROWS][COLS])
     }
 }
 
-// Gets called in order to run the game. All the initialization happens and the main loop is handled there.
-int run_pong(int argc, char *argv[])
+int run_pong()
 {
     uint grid[ROWS][COLS];
 

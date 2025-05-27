@@ -88,20 +88,21 @@ add_executable(uiaos-kernel
     # SONG
     src/song/songPlayer.c
 
-    # Game
+    # GAME
     src/game/game.c
 
-    # ASSEMBLY 
-    src/arch/i386/descriptor_tables.asm
+	# ASSEMBLY
+	src/arch/i386/descriptor_tables.asm
     src/arch/i386/ISR.asm
     src/multiboot2.asm
+
+
 )
 
 # Necessary for .asm files to be in the add_executable function
 set_source_files_properties(src/arch/i386/descriptor_tables.asm PROPERTIES LANGUAGE ASM_NASM)
 set_source_files_properties(src/arch/i386/ISR.asm PROPERTIES LANGUAGE ASM_NASM)
 set_source_files_properties(src/multiboot2.asm PROPERTIES LANGUAGE ASM_NASM)
-
 
 # Include directories for the kernel target
 target_include_directories(uiaos-kernel PUBLIC include)
