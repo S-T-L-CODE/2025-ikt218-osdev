@@ -7,6 +7,7 @@
 #define WIDTH 80
 #define HEIGHT 25
 
+// Defines position of a single falling column.
 typedef struct
 {
     int y_pos;
@@ -16,8 +17,9 @@ typedef struct
 
 static ColumnState columns[WIDTH];
 
+// Defining the color of columns that will appear
 static uint8_t color_palette[] = {0x2, 0x4, 0xB, 0xE, 0xD};
-
+// Initializing all the columns's speed, color and starting position.
 void init_matrix()
 {
     setupRNG(947);
