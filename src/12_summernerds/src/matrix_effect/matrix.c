@@ -4,60 +4,63 @@
 #include "random.h"
 #include "i386/monitor.h"
 
-#define WIDTH 80
-#define HEIGHT 25
+#define WIDTH 80  // Screen width
+#define HEIGHT 25 // Screen height
 
-// Defines position of a single falling column.
+// Column state
 typedef struct
 {
-    int y_pos;
-    int speed;
-    int color;
+    int y_pos; // Position
+    int speed; // Speed
+    int color; // Color
 } ColumnState;
 
-static ColumnState columns[WIDTH];
+static ColumnState columns[WIDTH]; // Columns array
 
-// Defining the color of columns that will appear
+// Color options
 static uint8_t color_palette[] = {0x02, 0x04, 0x01, 0x0E};
-// Initializing all the columns's speed, color and starting position.
+
+// Init columns
 void init_matrix()
 {
-    setupRNG(947);
+    setupRNG(947); // Init random
+
     for (int i = 0; i < WIDTH; i++)
     {
-        columns[i].y_pos = randint(100) % HEIGHT;
-        columns[i].speed = 1 + randint(100) % 3;
-        columns[i].color = color_palette[randint(1000) % 4];
+        columns[i].y_pos = randint(100) % HEIGHT;            // Start position
+        columns[i].speed = 1 + randint(100) % 3;             // Random speed
+        columns[i].color = color_palette[randint(1000) % 4]; // Random color
     }
 }
 
+// Draw one frame
 void draw_matrix_frame()
-// The function that make the matrix effect
-//(draws one frame for the matrix effect for each raining character)
 {
-    monitor_clear();
+    monitor_clear(); // Clear screen
+
     for (int x = 0; x < WIDTH; x++)
     {
-        int y_max = columns[x].y_pos;
+        int y_max = columns[x].y_pos; // Max Y
 
         for (int y = 0; y < y_max; y++)
         {
-            char ch = 33 + randint(94);
+            char ch = 33 + randint(94); // Random char
+
             if (y < HEIGHT)
             {
                 volatile char *cell = (char *)0xB8000 + 2 * (y * WIDTH + x);
-                cell[0] = ch;
-                cell[1] = columns[x].color;
+                cell[0] = ch;               // Set char
+                cell[1] = columns[x].color; // Set color
             }
         }
 
-        columns[x].y_pos += columns[x].speed;
+        columns[x].y_pos += columns[x].speed; // Move down
 
         if (columns[x].y_pos >= HEIGHT + 3)
         {
-            columns[x].y_pos = 0;
-            columns[x].speed = 1 + randint(3);
-            columns[x].color = color_palette[randint(1000) % 4];
+            columns[x].y_pos = 0;                                // Reset
+            columns[x].speed = 1 + randint(3);                   // New speed
+            columns[x].color = color_palette[randint(1000) % 4]; // New color
         }
     }
 }
